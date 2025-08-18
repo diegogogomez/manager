@@ -1,0 +1,34 @@
+# Archivo de ejemplo para mostrar la configuración
+# Copia este archivo y renómbralo según tu entorno
+
+server:
+  port: 8080
+
+spring:
+  profiles:
+    active: default  # Cambia a 'docker' para usar contenedores
+
+  rabbitmq:
+    host: localhost  # Cambia a 'rabbitmq' para Docker
+    port: 5672
+    username: guest
+    password: guest
+
+elasticsearch:
+  host: localhost    # Cambia a 'elasticsearch' para Docker
+  port: 9200
+  username: elastic
+  password: changeme
+  scheme: http
+
+logging:
+  level:
+    org.springframework.data.elasticsearch: DEBUG
+    org.elasticsearch: DEBUG
+
+# Para usar con Docker, ejecuta:
+# docker-compose up -d
+# 
+# Para desarrollo local:
+# ./gradlew bootRun
+
