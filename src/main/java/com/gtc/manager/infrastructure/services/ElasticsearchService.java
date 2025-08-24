@@ -83,4 +83,19 @@ public class ElasticsearchService {
         CountResponse response = client.count(c -> c.index(INDEX_NAME));
         return response.count();
     }
+    
+    /**
+     * Obtiene un mensaje por su ID
+     */
+    public MessageDocument findMessageById(String id) throws IOException {
+        GetResponse<MessageDocument> response = client.get(g -> g
+            .index(INDEX_NAME)
+            .id(id), MessageDocument.class);
+        
+        if (response.found()) {
+            return response.source();
+        } else {
+            throw new IOException("Mensaje no encontrado con ID: " + id);
+        }
+    }
 }

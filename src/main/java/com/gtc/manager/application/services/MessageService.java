@@ -21,14 +21,15 @@ public class MessageService implements MessageUseCase {
     
     @Override
     public void sendMessage(String message) {
-        // Enviar mensaje a RabbitMQ
-        messageGateway.sendMessage(message);
-        
-        // Guardar mensaje en Elasticsearch
         try {
+            // Primero guardar mensaje en Elasticsearch
             MessageDocument messageDoc = new MessageDocument(message, "RABBITMQ");
             String documentId = elasticsearchService.saveMessage(messageDoc);
             System.out.println("✅ Mensaje guardado en Elasticsearch con ID: " + documentId);
+            
+            // Luego enviar solo el ID al tópico
+            messageGateway.sendMessageId(documentId);
+            
         } catch (IOException e) {
             System.err.println("❌ Error guardando mensaje en Elasticsearch: " + e.getMessage());
         }

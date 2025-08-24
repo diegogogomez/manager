@@ -15,13 +15,13 @@ public class RabbitMQMessageAdapter implements MessageGateway {
     }
     
     @Override
-    public void sendMessage(String message) {
+    public void sendMessageId(String messageId) {
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.EXCHANGE_NAME,
                 RabbitMQConfig.ROUTING_KEY,
-                message
+                messageId
         );
-        System.out.println("📤 Mensaje enviado: " + message);
+        System.out.println("📤 ID de mensaje enviado: " + messageId);
     }
 }
 

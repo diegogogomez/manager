@@ -19,19 +19,20 @@ public class MessageConsumerService implements MessageConsumerUseCase {
     }
     
     @Override
-    public void processMessage(String message) {
-        System.out.println("🔄 Procesando mensaje: " + message);
+    public void processMessage(String messageId) {
+        System.out.println("🔄 Procesando ID de mensaje: " + messageId);
         
         try {
-            // Crear documento del mensaje
-            MessageDocument messageDoc = new MessageDocument(message, "CONSUMED");
+            // Obtener el mensaje completo desde Elasticsearch usando el ID
+            MessageDocument originalMessage = elasticsearchService.findMessageById(messageId);
+            System.out.println("📄 Mensaje original recuperado: " + originalMessage.getMessage());
             
-            // Guardar en Elasticsearch
-            String documentId = elasticsearchService.saveMessage(messageDoc);
-            System.out.println("✅ Mensaje procesado y guardado con ID: " + documentId);
+            // Aquí puedes implementar la lógica de negocio para procesar el mensaje
+            // Por ejemplo: validaciones, transformaciones, envío a otros servicios, etc.
+            System.out.println("✅ Mensaje procesado exitosamente");
             
         } catch (IOException e) {
-            System.err.println("❌ Error procesando mensaje: " + e.getMessage());
+            System.err.println("❌ Error procesando mensaje con ID " + messageId + ": " + e.getMessage());
             throw new RuntimeException("Error procesando mensaje", e);
         }
     }
